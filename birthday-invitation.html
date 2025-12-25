@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Great XYZ Bakeoff: Season 3</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -253,7 +253,7 @@
       box-shadow: 0 4px 12px rgba(230, 126, 34, 0.5);
     }
 
-    /* Corner decorations */
+    /* Corner decorations - pastry themed, no top-right */
     .corner-decor {
       position: absolute;
       font-size: 1.8rem;
@@ -261,7 +261,6 @@
     }
 
     .corner-tl { top: 22px; left: 22px; }
-    .corner-tr { top: 22px; right: 58px; }
     .corner-bl { bottom: 22px; left: 22px; }
     .corner-br { bottom: 22px; right: 22px; }
 
@@ -295,12 +294,12 @@
 
     .show-title .season {
       display: block;
-      font-size: 1.4rem;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
       color: #e67e22;
-      font-weight: 900;
-      font-style: italic;
-      margin-top: 5px;
-      letter-spacing: 1px;
+      font-weight: 600;
+      margin-top: 8px;
+      letter-spacing: 2px;
     }
 
     .contestant-section {
@@ -370,7 +369,9 @@
     }
 
     .detail-row strong {
+      font-family: 'Fredoka', sans-serif;
       color: #2c3e50;
+      font-weight: 500;
     }
 
     .rsvp-deadline-card {
@@ -386,7 +387,7 @@
     /* RSVP Buttons - appear below card */
     .rsvp-buttons {
       position: fixed;
-      bottom: 15%;
+      bottom: 6%;
       left: 50%;
       transform: translateX(-50%) translateY(30px);
       display: flex;
@@ -446,24 +447,20 @@
       box-shadow: 0 10px 30px rgba(149, 165, 166, 0.5);
     }
 
-    /* Scroll indicator */
+    /* Scroll indicator - simple text */
     .scroll-indicator {
       position: fixed;
-      bottom: 5%;
+      bottom: 2%;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 3px;
       opacity: 0;
       transition: opacity 0.5s ease;
       z-index: 102;
       cursor: pointer;
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .scroll-indicator.visible {
@@ -477,9 +474,8 @@
     }
 
     .scroll-indicator span {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #8b5a2b;
-      font-weight: 500;
     }
 
     .scroll-indicator .arrow {
@@ -498,7 +494,7 @@
       padding: 80px 20px 50px;
       background:
         linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.95)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ctext x='5' y='20' font-size='16'%3E🥄%3C/text%3E%3Ctext x='35' y='45' font-size='14'%3E🍳%3C/text%3E%3Ctext x='10' y='55' font-size='12'%3E🥣%3C/text%3E%3Ctext x='45' y='15' font-size='13'%3E🧅%3C/text%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ctext x='5' y='20' font-size='16'%3E🥄%3C/text%3E%3Ctext x='35' y='45' font-size='14'%3E🧁%3C/text%3E%3Ctext x='10' y='55' font-size='12'%3E🥣%3C/text%3E%3Ctext x='45' y='15' font-size='13'%3E🍰%3C/text%3E%3C/svg%3E");
       border-top: 3px solid #e67e22;
       position: relative;
     }
@@ -509,8 +505,8 @@
     }
 
     .details-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
       color: #d35400;
       margin-bottom: 25px;
       text-align: center;
@@ -540,10 +536,12 @@
     }
 
     .detail-item strong {
+      font-family: 'Fredoka', sans-serif;
       color: #2c3e50;
       display: block;
       margin-bottom: 4px;
       font-size: 1.05rem;
+      font-weight: 500;
     }
 
     /* Responsive */
@@ -558,7 +556,7 @@
       }
 
       .show-title .season {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
       }
 
       .detail-row {
@@ -572,7 +570,7 @@
       .rsvp-buttons {
         flex-direction: column;
         gap: 10px;
-        bottom: 18%;
+        bottom: 8%;
       }
 
       .rsvp-btn {
@@ -581,7 +579,7 @@
       }
 
       .scroll-indicator {
-        bottom: 3%;
+        bottom: 2%;
       }
 
       .details-section {
@@ -595,13 +593,13 @@
   </style>
 </head>
 <body>
-  <!-- Floating decorations - evenly distributed -->
+  <!-- Floating decorations - evenly distributed, no fried egg -->
   <div class="floating-decor decor-1">🥣</div>
-  <div class="floating-decor decor-2">🍳</div>
+  <div class="floating-decor decor-2">🥐</div>
   <div class="floating-decor decor-3">👨‍🍳</div>
   <div class="floating-decor decor-4">🥧</div>
   <div class="floating-decor decor-5">🥄</div>
-  <div class="floating-decor decor-6">🍕</div>
+  <div class="floating-decor decor-6">🍩</div>
   <div class="floating-decor decor-7">🥗</div>
   <div class="floating-decor decor-8">🧁</div>
   <div class="floating-decor decor-9">🧇</div>
@@ -624,10 +622,10 @@
   <!-- Card (flies out separately) -->
   <div class="card" id="card">
     <button class="close-btn" id="closeBtn">✕</button>
-    <span class="corner-decor corner-tl">🥄</span>
-    <span class="corner-decor corner-tr">🍳</span>
-    <span class="corner-decor corner-bl">🥣</span>
-    <span class="corner-decor corner-br">🧂</span>
+    <!-- Pastry themed corners - no top-right due to close button -->
+    <span class="corner-decor corner-tl">🧁</span>
+    <span class="corner-decor corner-bl">🍰</span>
+    <span class="corner-decor corner-br">🥐</span>
 
     <div class="card-header">
       <div class="show-badge">You're Invited!</div>
@@ -675,7 +673,7 @@
     </a>
   </div>
 
-  <!-- Scroll indicator -->
+  <!-- Scroll indicator - simple text -->
   <div class="scroll-indicator" id="scrollIndicator">
     <span>More details</span>
     <span class="arrow">↓</span>
@@ -761,6 +759,8 @@
       card.classList.add('closing');
       rsvpButtons.classList.remove('visible');
       rsvpButtons.classList.add('hidden');
+      scrollIndicator.classList.remove('visible');
+      scrollIndicator.classList.add('hidden');
       cardVisible = false;
 
       setTimeout(() => {
@@ -773,23 +773,14 @@
       card.classList.add('visible');
       rsvpButtons.classList.remove('hidden');
       rsvpButtons.classList.add('visible');
+      scrollIndicator.classList.remove('hidden');
+      scrollIndicator.classList.add('visible');
       cardVisible = true;
     }
 
-    // Scroll indicator - close card first, then scroll
+    // Scroll indicator click
     scrollIndicator.addEventListener('click', function() {
-      if (cardVisible) {
-        closeCard();
-        scrollIndicator.classList.remove('visible');
-        scrollIndicator.classList.add('hidden');
-
-        // Wait for card to close, then scroll
-        setTimeout(() => {
-          detailsSection.scrollIntoView({ behavior: 'smooth' });
-        }, 400);
-      } else {
-        detailsSection.scrollIntoView({ behavior: 'smooth' });
-      }
+      detailsSection.scrollIntoView({ behavior: 'smooth' });
     });
 
     // Prevent RSVP button clicks from any propagation issues
@@ -797,17 +788,22 @@
       btn.addEventListener('click', (e) => e.stopPropagation());
     });
 
-    // When scrolling back to top, show card again
+    // When scrolling, close card if scrolling down, open if scrolling back up
+    let lastScrollY = 0;
     window.addEventListener('scroll', () => {
-      if (window.scrollY < 100 && isOpen && !cardVisible) {
+      const currentScrollY = window.scrollY;
+
+      // Scrolling down - close card
+      if (currentScrollY > 50 && cardVisible) {
+        closeCard();
+      }
+
+      // Scrolling back to top - open card
+      if (currentScrollY < 50 && isOpen && !cardVisible) {
         openCard();
-        scrollIndicator.classList.remove('hidden');
-        scrollIndicator.classList.add('visible');
       }
-      if (window.scrollY > 100) {
-        scrollIndicator.classList.remove('visible');
-        scrollIndicator.classList.add('hidden');
-      }
+
+      lastScrollY = currentScrollY;
     });
   </script>
 </body>
