@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Great XYZ Bakeoff: Season 3</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -72,8 +72,9 @@
     }
 
     .envelope-container.opened {
-      transform: translateY(120px) scale(0.5);
-      opacity: 0.4;
+      transform: translateY(100px) scale(0.3);
+      opacity: 0;
+      pointer-events: none;
     }
 
     /* Envelope */
@@ -171,6 +172,25 @@
     .click-hint.hidden {
       opacity: 0;
       pointer-events: none;
+    }
+
+    .reopen-hint {
+      position: absolute;
+      bottom: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: #8b5a2b;
+      animation: pulse 2s infinite;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+      cursor: pointer;
+    }
+
+    .reopen-hint.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     @keyframes pulse {
@@ -273,12 +293,13 @@
       display: inline-block;
       background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
       color: white;
-      padding: 6px 18px;
+      padding: 8px 22px;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
       font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-transform: none;
       margin-bottom: 12px;
     }
 
@@ -543,6 +564,64 @@
       font-weight: 500;
     }
 
+    /* Contact section */
+    .contact-section {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 2px dashed #e67e22;
+    }
+
+    .contact-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      color: #d35400;
+      margin-bottom: 20px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .contact-btn.message {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+    }
+
+    .contact-btn.message:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+    }
+
+    .contact-btn.whatsapp {
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    }
+
+    .contact-btn.whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+    }
+
     /* Responsive */
     @media (max-width: 600px) {
       .card {
@@ -596,7 +675,7 @@
   <!-- Floating decorations - swapped croissant/waffle, salad replaced with pizza -->
   <div class="floating-decor decor-1">🥣</div>
   <div class="floating-decor decor-2">🧇</div>
-  <div class="floating-decor decor-3">👩🏽‍🍳</div>
+  <div class="floating-decor decor-3">👨‍🍳</div>
   <div class="floating-decor decor-4">🥧</div>
   <div class="floating-decor decor-5">🥄</div>
   <div class="floating-decor decor-6">🍩</div>
@@ -617,6 +696,7 @@
       </div>
       <p class="click-hint" id="clickHint">✨ Tap to open ✨</p>
     </div>
+    <p class="reopen-hint" id="reopenHint">✨ Tap to view invite ✨</p>
   </section>
 
   <!-- Card (flies out separately) -->
@@ -642,7 +722,7 @@
     </div>
 
     <div class="divider">
-      <span>👩🏽‍🍳</span>
+      <span>👨‍🍳</span>
     </div>
 
     <div class="event-details">
@@ -713,6 +793,19 @@
           </div>
         </div>
       </div>
+
+      <!-- Contact Section -->
+      <div class="contact-section">
+        <h4 class="contact-title">Questions? Get in touch!</h4>
+        <div class="contact-buttons">
+          <a href="sms:+15551234567" class="contact-btn message">
+            <span>💬</span> Message Us
+          </a>
+          <a href="https://wa.me/15551234567" target="_blank" class="contact-btn whatsapp">
+            <span>📱</span> WhatsApp
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -722,9 +815,11 @@
     const card = document.getElementById('card');
     const closeBtn = document.getElementById('closeBtn');
     const clickHint = document.getElementById('clickHint');
+    const reopenHint = document.getElementById('reopenHint');
     const rsvpButtons = document.getElementById('rsvpButtons');
     const scrollIndicator = document.getElementById('scrollIndicator');
     const detailsSection = document.getElementById('detailsSection');
+    const mainSection = document.querySelector('.main-section');
 
     let isOpen = false;
     let cardVisible = false;
@@ -766,6 +861,10 @@
 
       setTimeout(() => {
         card.classList.remove('closing');
+        // Show reopen hint if at top of page
+        if (window.scrollY < 50 && isOpen) {
+          reopenHint.classList.add('visible');
+        }
       }, 500);
     }
 
@@ -776,8 +875,23 @@
       rsvpButtons.classList.add('visible');
       scrollIndicator.classList.remove('hidden');
       scrollIndicator.classList.add('visible');
+      reopenHint.classList.remove('visible');
       cardVisible = true;
     }
+
+    // Click on reopen hint or main section to reopen card
+    reopenHint.addEventListener('click', function() {
+      if (isOpen && !cardVisible) {
+        openCard();
+      }
+    });
+
+    mainSection.addEventListener('click', function(e) {
+      // Only reopen if envelope is already open and card is not visible
+      if (isOpen && !cardVisible && e.target !== closeBtn) {
+        openCard();
+      }
+    });
 
     // Scroll indicator click
     scrollIndicator.addEventListener('click', function() {
@@ -789,18 +903,21 @@
       btn.addEventListener('click', (e) => e.stopPropagation());
     });
 
-    // When scrolling, close card if scrolling down, open if scrolling back up
+    // When scrolling, close card if scrolling down, show reopen hint when back at top
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
 
-      // Scrolling down - close card
-      if (currentScrollY > 50 && cardVisible) {
-        closeCard();
+      // Scrolling down - close card and hide reopen hint
+      if (currentScrollY > 50) {
+        if (cardVisible) {
+          closeCard();
+        }
+        reopenHint.classList.remove('visible');
       }
 
-      // Scrolling back to top - open card
+      // Scrolling back to top - show reopen hint if card is closed
       if (currentScrollY < 50 && isOpen && !cardVisible) {
-        openCard();
+        reopenHint.classList.add('visible');
       }
     });
   </script>
