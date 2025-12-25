@@ -90,9 +90,9 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(145deg, #7c3aed 0%, #6d28d9 100%);
+      background: linear-gradient(145deg, #9b59b6 0%, #8e44ad 100%);
       border-radius: 10px;
-      box-shadow: 0 15px 40px rgba(109, 40, 217, 0.3);
+      box-shadow: 0 15px 40px rgba(142, 68, 173, 0.3);
     }
 
     .envelope-back::before {
@@ -112,7 +112,7 @@
       width: 100%;
       height: 55%;
       top: 0;
-      background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 100%);
+      background: linear-gradient(180deg, #af7ac5 0%, #9b59b6 100%);
       clip-path: polygon(0 0, 50% 80%, 100% 0);
       transform-origin: top center;
       transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -128,7 +128,7 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(145deg, #7c3aed 0%, #6d28d9 100%);
+      background: linear-gradient(145deg, #9b59b6 0%, #8e44ad 100%);
       clip-path: polygon(0 40%, 50% 75%, 100% 40%, 100% 100%, 0 100%);
       z-index: 15;
       border-radius: 0 0 10px 10px;
@@ -142,14 +142,14 @@
       transform: translate(-50%, -50%);
       width: 70px;
       height: 70px;
-      background: radial-gradient(circle, #5b21b6 0%, #4c1d95 100%);
+      background: radial-gradient(circle, #7d3c98 0%, #5b2c6f 100%);
       border-radius: 50%;
       z-index: 25;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
-      box-shadow: 0 4px 15px rgba(76, 29, 149, 0.5);
+      box-shadow: 0 4px 15px rgba(91, 44, 111, 0.5);
       transition: opacity 0.5s, transform 0.5s;
     }
 
@@ -283,7 +283,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 2.2rem;
       font-weight: 700;
-      color: #411375;
+      color: #2c3e50;
       line-height: 1.2;
       margin-bottom: 8px;
     }
@@ -316,7 +316,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       font-weight: 700;
-      color: #411375;
+      color: #8e44ad;
     }
 
     .contestant-tagline {
@@ -847,12 +847,9 @@
 
   <script>
     // Google Sheets configuration
-    // To use: 1) Publish your Google Sheet to web (File > Share > Publish to web)
-    // 2) Replace SPREADSHEET_ID with your sheet's ID from the URL
-    // 3) The sheet should have "Please enter your name" in column A and "Will you be attending" in column B
-    const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
-    const SHEET_NAME = 'Form Responses 1'; // Default name for form responses
-    const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    // Column structure: A=Timestamp, B=Name, C=Attending, D=Adults, E=Kids, F=Allergies, G=Notes, H=OK to share
+    const SPREADSHEET_ID = '1_EScH70lr3VoJU-79WkAzI6XvHhw6oga77cO_KApyNQ';
+    const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
 
     // Fetch attendees from Google Sheets
     async function fetchAttendees() {
@@ -869,10 +866,21 @@
         const data = JSON.parse(jsonString[1]);
         const rows = data.table.rows;
 
-        // Filter for "Yes" responses (column B = index 1) and get names (column A = index 0)
+        // Column indices: B=1 (name), C=2 (attending), H=7 (ok to share)
+        const NAME_COL = 1;
+        const ATTENDING_COL = 2;
+        const OK_TO_SHARE_COL = 7;
+
+        // Filter for "Yes" to attending AND "Yes" to OK to share, then get names
         const attendees = rows
-          .filter(row => row.c && row.c[1] && row.c[1].v && row.c[1].v.toLowerCase() === 'yes')
-          .map(row => row.c[0] && row.c[0].v ? row.c[0].v : null)
+          .filter(row => {
+            if (!row.c) return false;
+            const attending = row.c[ATTENDING_COL] && row.c[ATTENDING_COL].v;
+            const okToShare = row.c[OK_TO_SHARE_COL] && row.c[OK_TO_SHARE_COL].v;
+            return attending && attending.toString().toLowerCase() === 'yes' &&
+                   okToShare && okToShare.toString().toLowerCase() === 'yes';
+          })
+          .map(row => row.c[NAME_COL] && row.c[NAME_COL].v ? row.c[NAME_COL].v : null)
           .filter(name => name !== null);
 
         if (attendees.length === 0) {
@@ -884,12 +892,7 @@
         }
       } catch (error) {
         console.log('Could not fetch attendees:', error);
-        // Show placeholder names for demo
-        attendeesList.innerHTML = `
-          <span class="attendee-chip">Demo Guest 1</span>
-          <span class="attendee-chip">Demo Guest 2</span>
-          <span class="attendee-chip">Demo Guest 3</span>
-        `;
+        attendeesList.innerHTML = '<p class="attendees-empty">Be the first to RSVP!</p>';
       }
     }
 
