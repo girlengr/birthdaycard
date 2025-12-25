@@ -72,9 +72,8 @@
     }
 
     .envelope-container.opened {
-      transform: translateY(60px) scale(0.55);
-      opacity: 0.6;
-      pointer-events: none;
+      transform: translateY(120px) scale(0.5);
+      opacity: 0.4;
     }
 
     /* Envelope */
@@ -182,7 +181,7 @@
     /* Card - flies out and forward */
     .card {
       position: fixed;
-      top: 50%;
+      top: 42%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.5);
       width: 90%;
@@ -294,12 +293,12 @@
 
     .show-title .season {
       display: block;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: #e67e22;
-      font-weight: 600;
-      margin-top: 8px;
-      letter-spacing: 2px;
+      font-weight: 900;
+      font-style: italic;
+      margin-top: 5px;
+      letter-spacing: 1px;
     }
 
     .contestant-section {
@@ -387,7 +386,7 @@
     /* RSVP Buttons - appear below card */
     .rsvp-buttons {
       position: fixed;
-      bottom: 6%;
+      bottom: 12%;
       left: 50%;
       transform: translateX(-50%) translateY(30px);
       display: flex;
@@ -450,7 +449,7 @@
     /* Scroll indicator - simple text */
     .scroll-indicator {
       position: fixed;
-      bottom: 2%;
+      bottom: 5%;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -549,6 +548,7 @@
       .card {
         padding: 25px;
         width: 95%;
+        top: 38%;
       }
 
       .show-title {
@@ -556,7 +556,7 @@
       }
 
       .show-title .season {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
 
       .detail-row {
@@ -570,7 +570,7 @@
       .rsvp-buttons {
         flex-direction: column;
         gap: 10px;
-        bottom: 8%;
+        bottom: 15%;
       }
 
       .rsvp-btn {
@@ -579,7 +579,7 @@
       }
 
       .scroll-indicator {
-        bottom: 2%;
+        bottom: 5%;
       }
 
       .details-section {
@@ -593,16 +593,16 @@
   </style>
 </head>
 <body>
-  <!-- Floating decorations - evenly distributed, no fried egg -->
+  <!-- Floating decorations - swapped croissant/waffle, salad replaced with pizza -->
   <div class="floating-decor decor-1">🥣</div>
-  <div class="floating-decor decor-2">🥐</div>
-  <div class="floating-decor decor-3">👨‍🍳</div>
+  <div class="floating-decor decor-2">🧇</div>
+  <div class="floating-decor decor-3">👩🏽‍🍳</div>
   <div class="floating-decor decor-4">🥧</div>
   <div class="floating-decor decor-5">🥄</div>
   <div class="floating-decor decor-6">🍩</div>
-  <div class="floating-decor decor-7">🥗</div>
+  <div class="floating-decor decor-7">🍕</div>
   <div class="floating-decor decor-8">🧁</div>
-  <div class="floating-decor decor-9">🧇</div>
+  <div class="floating-decor decor-9">🥐</div>
   <div class="floating-decor decor-10">🍰</div>
 
   <!-- Main section with envelope and card -->
@@ -625,7 +625,7 @@
     <!-- Pastry themed corners - no top-right due to close button -->
     <span class="corner-decor corner-tl">🧁</span>
     <span class="corner-decor corner-bl">🍰</span>
-    <span class="corner-decor corner-br">🥐</span>
+    <span class="corner-decor corner-br">🥞</span>
 
     <div class="card-header">
       <div class="show-badge">You're Invited!</div>
@@ -642,7 +642,7 @@
     </div>
 
     <div class="divider">
-      <span>👨‍🍳</span>
+      <span>👩🏽‍🍳</span>
     </div>
 
     <div class="event-details">
@@ -729,7 +729,8 @@
     let isOpen = false;
     let cardVisible = false;
 
-    envelope.addEventListener('click', function() {
+    // Click on envelope to open
+    envelopeContainer.addEventListener('click', function() {
       if (!isOpen) {
         isOpen = true;
 
@@ -789,7 +790,6 @@
     });
 
     // When scrolling, close card if scrolling down, open if scrolling back up
-    let lastScrollY = 0;
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
 
@@ -802,8 +802,6 @@
       if (currentScrollY < 50 && isOpen && !cardVisible) {
         openCard();
       }
-
-      lastScrollY = currentScrollY;
     });
   </script>
 </body>
