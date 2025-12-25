@@ -115,7 +115,7 @@
       background: linear-gradient(180deg, #af7ac5 0%, #9b59b6 100%);
       clip-path: polygon(0 0, 50% 80%, 100% 0);
       transform-origin: top center;
-      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 20;
       border-radius: 10px 10px 0 0;
     }
@@ -200,8 +200,8 @@
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.5s ease;
+      transition: transform 1.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 1s ease;
     }
 
     .card.visible {
@@ -930,7 +930,7 @@
         rsvpButtons.classList.add('visible');
         scrollIndicator.classList.remove('hidden');
         scrollIndicator.classList.add('visible');
-      }, 600);
+      }, 900);
     }
 
     // Click on envelope to open
@@ -974,7 +974,25 @@
 
     // Scroll indicator click
     scrollIndicator.addEventListener('click', function() {
-      detailsSection.scrollIntoView({ behavior: 'smooth' });
+      // Slow smooth scroll to details section
+      const targetPosition = detailsSection.getBoundingClientRect().top + window.pageYOffset;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1500; // 1.5 seconds
+      let start = null;
+
+      function smoothScroll(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
+        // Ease out cubic for smooth deceleration
+        const easing = 1 - Math.pow(1 - percentage, 3);
+        window.scrollTo(0, startPosition + distance * easing);
+        if (progress < duration) {
+          requestAnimationFrame(smoothScroll);
+        }
+      }
+      requestAnimationFrame(smoothScroll);
     });
 
     // Prevent RSVP button clicks from any propagation issues
