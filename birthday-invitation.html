@@ -704,7 +704,7 @@
   <!-- Floating decorations -->
   <div class="floating-decor decor-1">🍩</div>
   <div class="floating-decor decor-2">🧇</div>
-  <div class="floating-decor decor-3">👨‍🍳</div>
+  <div class="floating-decor decor-3">👩‍🍳</div>
   <div class="floating-decor decor-4">🥧</div>
   <div class="floating-decor decor-5">🥣</div>
   <div class="floating-decor decor-6">🥄</div>
@@ -750,7 +750,7 @@
     </div>
 
     <div class="divider">
-      <span>👨‍🍳</span>
+      <span>👩‍🍳</span>
     </div>
 
     <div class="event-details">
@@ -773,10 +773,10 @@
 
   <!-- RSVP Buttons -->
   <div class="rsvp-buttons" id="rsvpButtons">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf3ajARxPWhjzdl-6RNeIs0xgGPBwS3nJbu1N6ARGWUnPG-hg/viewform?entry.1267177856=Yes" target="_blank" class="rsvp-btn attend">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf3ajARxPWhjzdl-6RNeIs0xgGPBwS3nJbu1N6ARGWUnPG-hg/viewform?usp=pp_url&entry.1267177856=Yes" target="_blank" class="rsvp-btn attend">
       <span>🎉</span> Count Me In!
     </a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf3ajARxPWhjzdl-6RNeIs0xgGPBwS3nJbu1N6ARGWUnPG-hg/viewform?entry.1267177856=No" target="_blank" class="rsvp-btn decline">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf3ajARxPWhjzdl-6RNeIs0xgGPBwS3nJbu1N6ARGWUnPG-hg/viewform?usp=pp_url&entry.1267177856=No" target="_blank" class="rsvp-btn decline">
       <span>😢</span> Can't Make It
     </a>
   </div>
@@ -923,8 +923,11 @@
       setTimeout(() => {
         envelopeContainer.classList.add('opened');
         card.classList.add('visible');
+        card.classList.remove('closing');
         cardVisible = true;
+        rsvpButtons.classList.remove('hidden');
         rsvpButtons.classList.add('visible');
+        scrollIndicator.classList.remove('hidden');
         scrollIndicator.classList.add('visible');
       }, 600);
     }
