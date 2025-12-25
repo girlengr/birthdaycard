@@ -160,7 +160,7 @@
 
     .reopen-hint {
       position: absolute;
-      bottom: 25%;
+      bottom: 20%;
       left: 50%;
       transform: translateX(-50%);
       font-size: 0.9rem;
@@ -275,7 +275,7 @@
       display: inline-block;
       font-family: 'Pinyon Script', cursive;
       font-size: 2.2rem;
-      color: #411375;
+      color: #2c3e50;
       margin-bottom: 8px;
     }
 
@@ -283,7 +283,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 2.2rem;
       font-weight: 700;
-      color: #2c3e50;
+      color: #9b59b6;
       line-height: 1.2;
       margin-bottom: 8px;
     }
@@ -291,7 +291,7 @@
     .show-title .season {
       display: block;
       font-size: 1.4rem;
-      color: #9b59b6;
+      color: #411375;
       font-weight: 900;
       font-style: italic;
       margin-top: 5px;
@@ -849,21 +849,12 @@
     // Google Sheets configuration
     // Column structure: A=Timestamp, B=Name, C=Attending, D=Adults, E=Kids, F=Allergies, G=Notes, H=OK to share
     const SPREADSHEET_ID = '1_EScH70lr3VoJU-79WkAzI6XvHhw6oga77cO_KApyNQ';
-    const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
 
-    // Fetch attendees from Google Sheets
-    async function fetchAttendees() {
+    // JSONP callback function - called by Google Sheets
+    function handleAttendeesResponse(data) {
       const attendeesList = document.getElementById('attendeesList');
 
       try {
-        const response = await fetch(SHEETS_URL);
-        const text = await response.text();
-
-        // Google Sheets returns JSONP, need to extract JSON
-        const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?/);
-        if (!jsonString) throw new Error('Invalid response');
-
-        const data = JSON.parse(jsonString[1]);
         const rows = data.table.rows;
 
         // Column indices: B=1 (name), C=2 (attending), H=7 (ok to share)
@@ -891,13 +882,23 @@
             .join('');
         }
       } catch (error) {
-        console.log('Could not fetch attendees:', error);
+        console.log('Error processing attendees:', error);
         attendeesList.innerHTML = '<p class="attendees-empty">Be the first to RSVP!</p>';
       }
     }
 
-    // Fetch attendees on page load
-    fetchAttendees();
+    // Load attendees using JSONP (works around CORS for local files)
+    function loadAttendees() {
+      const script = document.createElement('script');
+      script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:handleAttendeesResponse`;
+      script.onerror = function() {
+        document.getElementById('attendeesList').innerHTML = '<p class="attendees-empty">Be the first to RSVP!</p>';
+      };
+      document.body.appendChild(script);
+    }
+
+    // Load attendees on page load
+    loadAttendees();
     const envelope = document.getElementById('envelope');
     const envelopeContainer = document.getElementById('envelopeContainer');
     const card = document.getElementById('card');
