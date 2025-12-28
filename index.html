@@ -220,15 +220,15 @@
         transform: translate(-50%, 0%) scale(0.75);
         clip-path: polygon(35% 0%, 65% 0%, 50% 5%);
       }
-      20% {
+      25% {
         transform: translate(-50%, -5%) scale(0.77);
         clip-path: polygon(28% 0%, 72% 0%, 50% 18%);
       }
-      40% {
+      45% {
         transform: translate(-50%, -12%) scale(0.8);
         clip-path: polygon(10% 0%, 90% 0%, 50% 32%);
       }
-      65% {
+      70% {
         transform: translate(-50%, -30%) scale(0.88);
         clip-path: polygon(0% 0%, 100% 0%, 100% 65%, 75% 100%, 25% 100%, 0% 65%);
       }
@@ -241,7 +241,7 @@
     .card.animating {
       opacity: 1;
       z-index: 12;
-      animation: cardEmerge 0.9s ease-out forwards;
+      animation: cardEmerge 0.85s ease-in-out forwards;
     }
 
     .card.visible {
@@ -1099,7 +1099,7 @@
         rsvpButtons.classList.remove('hidden');
         rsvpButtons.classList.add('visible');
         scrollIndicator.classList.remove('hidden');
-      }, 1000);
+      }, 1050);
     }
 
     // Click on envelope to open
