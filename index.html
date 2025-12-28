@@ -189,9 +189,9 @@
     /* Card - slides out of envelope */
     .card {
       position: fixed;
-      top: 42%;
+      top: 32%;
       left: 50%;
-      transform: translate(-50%, calc(-50% + 150px)) scale(0.85);
+      transform: translate(-50%, 0%) scale(0.75);
       width: 90%;
       max-width: 520px;
       background:
@@ -205,12 +205,47 @@
       z-index: 5;
       opacity: 0;
       pointer-events: none;
-      /* Clip bottom 60% initially - card appears cropped inside envelope */
-      clip-path: inset(0 0 60% 0);
-      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s ease,
-                  clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+      /* Hidden initially - collapsed triangle */
+      clip-path: polygon(35% 0%, 65% 0%, 50% 0%);
+      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.3s ease,
+                  clip-path 0.8s cubic-bezier(0.22, 1, 0.36, 1),
                   z-index 0s 0.4s;
+    }
+
+    /* Card peeking through envelope opening - small triangle */
+    .card.peeking {
+      opacity: 1;
+      z-index: 12;
+      /* Small triangle pointing down - top of card visible */
+      clip-path: polygon(30% 0%, 70% 0%, 50% 15%);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.3s ease,
+                  clip-path 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Card rising - larger triangle, slightly higher */
+    .card.rising {
+      opacity: 1;
+      z-index: 12;
+      transform: translate(-50%, -10%) scale(0.78);
+      /* Larger triangle */
+      clip-path: polygon(10% 0%, 90% 0%, 50% 30%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.3s ease,
+                  clip-path 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Card emerging - pentagon shape (bottom corners clipped) */
+    .card.emerging {
+      opacity: 1;
+      z-index: 12;
+      transform: translate(-50%, -35%) scale(0.85);
+      /* Pentagon - full top, bottom corners clipped diagonally */
+      clip-path: polygon(0% 0%, 100% 0%, 100% 65%, 75% 100%, 25% 100%, 0% 65%);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.3s ease,
+                  clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .card.visible {
@@ -218,20 +253,20 @@
       opacity: 1;
       pointer-events: auto;
       z-index: 100;
-      /* Reveal full card */
-      clip-path: inset(0 0 0 0);
-      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+      /* Reveal full card - rectangle */
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1),
                   opacity 0.3s ease,
-                  clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  clip-path 1s cubic-bezier(0.22, 1, 0.36, 1),
                   z-index 0s 0s;
     }
 
     .card.closing {
-      transform: translate(-50%, calc(-50% + 150px)) scale(0.85);
+      transform: translate(-50%, 0%) scale(0.75);
       opacity: 0;
       pointer-events: none;
       z-index: 5;
-      clip-path: inset(0 0 60% 0);
+      clip-path: polygon(35% 0%, 65% 0%, 50% 0%);
     }
 
     .card::before {
@@ -1058,17 +1093,34 @@
       // Open envelope flap
       envelope.classList.add('open');
 
-      // After flap opens, move envelope back and card forward
+      // Show card peeking through envelope opening - small triangle
       setTimeout(() => {
-        envelopeContainer.classList.add('opened');
-        card.classList.add('visible');
+        card.classList.add('peeking');
         card.classList.remove('closing');
+      }, 400);
+
+      // Card rising - larger triangle, slightly higher
+      setTimeout(() => {
+        card.classList.remove('peeking');
+        card.classList.add('rising');
+      }, 650);
+
+      // Card emerging - pentagon
+      setTimeout(() => {
+        card.classList.remove('rising');
+        card.classList.add('emerging');
+      }, 950);
+
+      // Card fully visible - rectangle
+      setTimeout(() => {
+        card.classList.remove('emerging');
+        card.classList.add('visible');
+        envelopeContainer.classList.add('opened');
         cardVisible = true;
         rsvpButtons.classList.remove('hidden');
         rsvpButtons.classList.add('visible');
         scrollIndicator.classList.remove('hidden');
-        scrollIndicator.classList.add('visible');
-      }, 600);
+      }, 1450);
     }
 
     // Click on envelope to open
@@ -1093,10 +1145,12 @@
 
     function closeCard() {
       card.classList.remove('visible');
+      card.classList.remove('peeking');
+      card.classList.remove('rising');
+      card.classList.remove('emerging');
       card.classList.add('closing');
       rsvpButtons.classList.remove('visible');
       rsvpButtons.classList.add('hidden');
-      scrollIndicator.classList.remove('visible');
       scrollIndicator.classList.add('hidden');
       cardVisible = false;
 
