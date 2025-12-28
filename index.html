@@ -237,18 +237,18 @@
         clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
       }
       75% {
-        transform: translate(-50%, -50%) scale(0.88);
-        /* Pentagon - higher up */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 25% 100%, 0% 50%);
+        transform: translate(-50%, -58%) scale(0.88);
+        /* Pentagon - higher up, point at bottom */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 50% 100%, 0% 50%);
       }
-      88% {
-        transform: translate(-50%, -60%) scale(0.95);
+      82% {
+        transform: translate(-50%, -75%) scale(0.95);
         /* Rectangle high - 6 points */
         clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
       }
       100% {
-        transform: translate(-50%, -30%) scale(1);
-        /* Rectangle settles down - 6 points */
+        transform: translate(-50%, -35%) scale(1);
+        /* Rectangle settles down lower - 6 points */
         clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
       }
     }
@@ -260,7 +260,7 @@
     }
 
     .card.visible {
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -35%) scale(1);
       opacity: 1;
       pointer-events: auto;
       z-index: 100;
