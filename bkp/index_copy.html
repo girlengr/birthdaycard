@@ -213,58 +213,53 @@
                   z-index 0s 0.4s;
     }
 
-    /* Card emergence animation - all shapes use 6 points for smooth interpolation */
-    @keyframes cardEmerge {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, 0%) scale(0.75);
-        /* Tiny triangle - 6 points collapsed */
-        clip-path: polygon(35% 0%, 65% 0%, 65% 0%, 50% 8%, 50% 8%, 35% 0%);
-      }
-      15% {
-        transform: translate(-50%, -3%) scale(0.76);
-        /* Small triangle */
-        clip-path: polygon(28% 0%, 72% 0%, 72% 0%, 50% 18%, 50% 18%, 28% 0%);
-      }
-      35% {
-        transform: translate(-50%, -8%) scale(0.78);
-        /* Medium triangle */
-        clip-path: polygon(18% 0%, 82% 0%, 82% 0%, 50% 28%, 50% 28%, 18% 0%);
-      }
-      55% {
-        transform: translate(-50%, -15%) scale(0.82);
-        /* Large triangle */
-        clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
-      }
-      75% {
-        transform: translate(-50%, -58%) scale(0.88);
-        /* Pentagon - higher up, point at bottom */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 50% 100%, 0% 50%);
-      }
-      82% {
-        transform: translate(-50%, -75%) scale(0.95);
-        /* Rectangle high - 6 points */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
-      }
-      100% {
-        transform: translate(-50%, -35%) scale(1);
-        /* Rectangle settles down lower - 6 points */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
-      }
-    }
-
-    .card.animating {
+    /* Card peeking through envelope opening - small triangle */
+    .card.peeking {
       opacity: 1;
       z-index: 12;
-      animation: cardEmerge 1.4s linear forwards;
+      transform: translate(-50%, -3%) scale(0.76);
+      /* Small triangle pointing down - top of card visible */
+      clip-path: polygon(30% 0%, 70% 0%, 50% 15%);
+      transition: transform 0.3s ease-out,
+                  opacity 0.2s ease,
+                  clip-path 0.3s ease-out;
+    }
+
+    /* Card rising - larger triangle, slightly higher */
+    .card.rising {
+      opacity: 1;
+      z-index: 12;
+      transform: translate(-50%, -12%) scale(0.8);
+      /* Larger triangle */
+      clip-path: polygon(10% 0%, 90% 0%, 50% 30%);
+      transition: transform 0.3s ease-out,
+                  opacity 0.2s ease,
+                  clip-path 0.3s ease-out;
+    }
+
+    /* Card emerging - pentagon shape (bottom corners clipped) */
+    .card.emerging {
+      opacity: 1;
+      z-index: 12;
+      transform: translate(-50%, -30%) scale(0.88);
+      /* Pentagon - full top, bottom corners clipped diagonally */
+      clip-path: polygon(0% 0%, 100% 0%, 100% 65%, 75% 100%, 25% 100%, 0% 65%);
+      transition: transform 0.35s ease-out,
+                  opacity 0.2s ease,
+                  clip-path 0.35s ease-out;
     }
 
     .card.visible {
-      transform: translate(-50%, -35%) scale(1);
+      transform: translate(-50%, -50%) scale(1);
       opacity: 1;
       pointer-events: auto;
       z-index: 100;
+      /* Reveal full card - rectangle */
       clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      transition: transform 0.4s ease-out,
+                  opacity 0.2s ease,
+                  clip-path 0.4s ease-out,
+                  z-index 0s 0s;
     }
 
     .card.closing {
@@ -752,85 +747,6 @@
         padding: 20px;
         width: 95%;
         top: 40%;
-        will-change: transform, clip-path, opacity;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-      }
-
-      /* Mobile card emergence animation - adjusted for top: 40% */
-      @keyframes cardEmergeMobile {
-        0% {
-          opacity: 1;
-          transform: translate3d(-50%, 0%, 0) scale(0.50);
-          clip-path: polygon(35% 0%, 65% 0%, 65% 0%, 50% 8%, 50% 8%, 35% 0%);
-        }
-        15% {
-          opacity: 1;
-          transform: translate3d(-50%, -3%, 0) scale(0.60);
-          clip-path: polygon(28% 0%, 72% 0%, 72% 0%, 50% 18%, 50% 18%, 28% 0%);
-        }
-        30% {
-          opacity: 1;
-          transform: translate3d(-50%, -8%, 0) scale(0.70);
-          clip-path: polygon(18% 0%, 82% 0%, 82% 0%, 50% 28%, 50% 28%, 18% 0%);
-        }
-        40% {
-          opacity: 1;
-          transform: translate3d(-50%, -15%, 0) scale(0.82);
-          clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
-        }
-        50% {
-          opacity: 1;
-          transform: translate3d(-50%, -35%, 0) scale(0.84);
-          /* Small pentagon - point at bottom */
-          clip-path: polygon(5% 0%, 95% 0%, 95% 25%, 50% 60%, 50% 60%, 5% 25%);
-        }
-        58% {
-          opacity: 1;
-          transform: translate3d(-50%, -50%, 0) scale(0.87);
-          /* Medium pentagon */
-          clip-path: polygon(2% 0%, 98% 0%, 98% 35%, 50% 75%, 50% 75%, 2% 35%);
-        }
-        66% {
-          opacity: 1;
-          transform: translate3d(-50%, -60%, 0) scale(0.90);
-          /* Larger pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 45%, 50% 90%, 50% 90%, 0% 45%);
-        }
-        75% {
-          opacity: 1;
-          transform: translate3d(-50%, -70%, 0) scale(0.93);
-          /* Large pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 55%, 50% 100%, 50% 100%, 0% 55%);
-        }
-        80% {
-          opacity: 1;
-          transform: translate3d(-50%, -75%, 0) scale(0.82);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 100% 100%, 0% 100%, 0% 80%);
-        }
-        86% {
-          opacity: 1;
-          transform: translate3d(-50%, -68%, 0) scale(0.85);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        92% {
-          opacity: 1;
-          transform: translate3d(-50%, -58%, 0) scale(0.90);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        100% {
-          opacity: 1;
-          transform: translate3d(-50%, -45%, 0) scale(1);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-      }
-
-      .card.animating {
-        animation: cardEmergeMobile 1.6s linear forwards;
-      }
-
-      .card.visible {
-        transform: translate3d(-50%, -45%, 0) scale(1);
       }
 
       .show-badge {
@@ -1090,7 +1006,7 @@
       <!-- Gift Note Section -->
       <div class="gift-section">
         <h4 class="gift-title">🎁 The Secret Ingredient</h4>
-        <p class="gift-text">Your presence is the best gift! While we cherish artwork made by our friends, if you would like to give more, please consider donating to a children's charity, such as <a href="https://www.cryamerica.org/donation/" target="_blank">CRY</a>, <a href="https://www.unicefusa.org/what-unicef-does/childrens-education/kids-need-desks-kind?form=donate" target="_blank">UNICEF</a>, or another close to your heart.</p>
+        <p class="gift-text">Your presence is the best gift! While we always cherish artwork from our friends, if you would like to give more, please consider donating to a children's charity, such as <a href="https://www.cryamerica.org/donation/" target="_blank">CRY</a>, <a href="https://www.unicefusa.org/what-unicef-does/childrens-education/kids-need-desks-kind?form=donate" target="_blank">UNICEF</a>, or another close to your heart.</p>
       </div>
 
       <!-- Who's Attending Section -->
@@ -1178,22 +1094,34 @@
       // Open envelope flap
       envelope.classList.add('open');
 
-      // Start card emergence animation
+      // Show card peeking through envelope opening - small triangle
       setTimeout(() => {
+        card.classList.add('peeking');
         card.classList.remove('closing');
-        card.classList.add('animating');
       }, 200);
 
-      // Card fully visible after animation completes
+      // Card rising - larger triangle, slightly higher
       setTimeout(() => {
-        card.classList.remove('animating');
+        card.classList.remove('peeking');
+        card.classList.add('rising');
+      }, 400);
+
+      // Card emerging - pentagon
+      setTimeout(() => {
+        card.classList.remove('rising');
+        card.classList.add('emerging');
+      }, 650);
+
+      // Card fully visible - rectangle
+      setTimeout(() => {
+        card.classList.remove('emerging');
         card.classList.add('visible');
         envelopeContainer.classList.add('opened');
         cardVisible = true;
         rsvpButtons.classList.remove('hidden');
         rsvpButtons.classList.add('visible');
         scrollIndicator.classList.remove('hidden');
-      }, 1300);
+      }, 900);
     }
 
     // Click on envelope to open
@@ -1218,7 +1146,9 @@
 
     function closeCard() {
       card.classList.remove('visible');
-      card.classList.remove('animating');
+      card.classList.remove('peeking');
+      card.classList.remove('rising');
+      card.classList.remove('emerging');
       card.classList.add('closing');
       rsvpButtons.classList.remove('visible');
       rsvpButtons.classList.add('hidden');

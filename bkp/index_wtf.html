@@ -186,14 +186,15 @@
       50% { opacity: 1; }
     }
 
-    /* Card - slides out of envelope */
+    /* Card */
     .card {
       position: fixed;
-      top: 32%;
+      top: 50%;
       left: 50%;
-      transform: translate(-50%, 0%) scale(0.75);
+      transform: translate(-50%, -50%);
       width: 90%;
       max-width: 520px;
+      z-index: 5;
       background:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%239b59b6' opacity='0.12'/%3E%3Ccircle cx='60' cy='40' r='1' fill='%238e44ad' opacity='0.08'/%3E%3Ccircle cx='80' cy='80' r='1.5' fill='%239b59b6' opacity='0.1'/%3E%3Ccircle cx='40' cy='70' r='1' fill='%238e44ad' opacity='0.08'/%3E%3Ccircle cx='10' cy='90' r='1' fill='%239b59b6' opacity='0.06'/%3E%3Ccircle cx='90' cy='10' r='1' fill='%238e44ad' opacity='0.08'/%3E%3C/svg%3E"),
         linear-gradient(180deg, #fdfbfe 0%, #f8f4fc 50%, #f5eef8 100%);
@@ -202,77 +203,61 @@
         0 25px 80px rgba(0, 0, 0, 0.2),
         inset 0 0 60px rgba(248, 244, 252, 0.5);
       padding: 35px;
-      z-index: 5;
       opacity: 0;
       pointer-events: none;
-      /* Hidden initially - collapsed triangle */
-      clip-path: polygon(35% 0%, 65% 0%, 50% 0%);
-      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.3s ease,
-                  clip-path 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                  z-index 0s 0.4s;
+      clip-path: polygon(50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%);
+      will-change: clip-path, transform, opacity;
     }
 
-    /* Card emergence animation - all shapes use 6 points for smooth interpolation */
+    /* Card emergence animation - 6-point polygon for smooth interpolation */
     @keyframes cardEmerge {
       0% {
         opacity: 1;
-        transform: translate(-50%, 0%) scale(0.75);
-        /* Tiny triangle - 6 points collapsed */
-        clip-path: polygon(35% 0%, 65% 0%, 65% 0%, 50% 8%, 50% 8%, 35% 0%);
+        clip-path: polygon(30% 0%, 50% 8%, 70% 0%, 70% 0%, 50% 8%, 30% 0%);
+        transform: translate(-50%, -5%);
       }
       15% {
-        transform: translate(-50%, -3%) scale(0.76);
-        /* Small triangle */
-        clip-path: polygon(28% 0%, 72% 0%, 72% 0%, 50% 18%, 50% 18%, 28% 0%);
+        clip-path: polygon(20% 0%, 50% 15%, 80% 0%, 80% 0%, 50% 15%, 20% 0%);
+        transform: translate(-50%, -10%);
       }
       35% {
-        transform: translate(-50%, -8%) scale(0.78);
-        /* Medium triangle */
-        clip-path: polygon(18% 0%, 82% 0%, 82% 0%, 50% 28%, 50% 28%, 18% 0%);
+        clip-path: polygon(10% 0%, 50% 25%, 90% 0%, 90% 0%, 50% 25%, 10% 0%);
+        transform: translate(-50%, -15%);
       }
       55% {
-        transform: translate(-50%, -15%) scale(0.82);
-        /* Large triangle */
-        clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
+        clip-path: polygon(0% 0%, 50% 35%, 100% 0%, 100% 55%, 50% 55%, 0% 55%);
+        transform: translate(-50%, -50%);
       }
       75% {
-        transform: translate(-50%, -58%) scale(0.88);
-        /* Pentagon - higher up, point at bottom */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 50% 100%, 0% 50%);
-      }
-      82% {
-        transform: translate(-50%, -75%) scale(0.95);
-        /* Rectangle high - 6 points */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
+        clip-path: polygon(0% 0%, 50% 20%, 100% 0%, 100% 80%, 50% 80%, 0% 80%);
+        transform: translate(-50%, -60%);
       }
       100% {
-        transform: translate(-50%, -35%) scale(1);
-        /* Rectangle settles down lower - 6 points */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
+        clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+        transform: translate(-50%, -50%);
       }
     }
 
     .card.animating {
       opacity: 1;
-      z-index: 12;
-      animation: cardEmerge 1.4s linear forwards;
+      z-index: 100;
+      animation: cardEmerge 1.5s ease-in-out forwards;
     }
 
     .card.visible {
-      transform: translate(-50%, -35%) scale(1);
+      transform: translate(-50%, -50%);
+      clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
       opacity: 1;
       pointer-events: auto;
       z-index: 100;
-      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     }
 
     .card.closing {
-      transform: translate(-50%, 0%) scale(0.75);
+      transform: translate(-50%, 0%);
+      clip-path: polygon(50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
       opacity: 0;
       pointer-events: none;
-      z-index: 5;
-      clip-path: polygon(35% 0%, 65% 0%, 50% 0%);
+      transition: transform 0.5s ease, opacity 0.3s ease, clip-path 0.4s ease;
     }
 
     .card::before {
@@ -751,86 +736,46 @@
       .card {
         padding: 20px;
         width: 95%;
-        top: 40%;
-        will-change: transform, clip-path, opacity;
+        will-change: clip-path, transform, opacity;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
       }
 
-      /* Mobile card emergence animation - adjusted for top: 40% */
+      /* Mobile card emergence animation - same clip-path approach */
       @keyframes cardEmergeMobile {
         0% {
           opacity: 1;
-          transform: translate3d(-50%, 0%, 0) scale(0.50);
-          clip-path: polygon(35% 0%, 65% 0%, 65% 0%, 50% 8%, 50% 8%, 35% 0%);
+          clip-path: polygon(30% 0%, 50% 8%, 70% 0%, 70% 0%, 50% 8%, 30% 0%);
+          transform: translate(-50%, -5%);
         }
         15% {
-          opacity: 1;
-          transform: translate3d(-50%, -3%, 0) scale(0.60);
-          clip-path: polygon(28% 0%, 72% 0%, 72% 0%, 50% 18%, 50% 18%, 28% 0%);
+          clip-path: polygon(20% 0%, 50% 15%, 80% 0%, 80% 0%, 50% 15%, 20% 0%);
+          transform: translate(-50%, -10%);
         }
-        30% {
-          opacity: 1;
-          transform: translate3d(-50%, -8%, 0) scale(0.70);
-          clip-path: polygon(18% 0%, 82% 0%, 82% 0%, 50% 28%, 50% 28%, 18% 0%);
+        35% {
+          clip-path: polygon(10% 0%, 50% 25%, 90% 0%, 90% 0%, 50% 25%, 10% 0%);
+          transform: translate(-50%, -15%);
         }
-        40% {
-          opacity: 1;
-          transform: translate3d(-50%, -15%, 0) scale(0.82);
-          clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
-        }
-        50% {
-          opacity: 1;
-          transform: translate3d(-50%, -35%, 0) scale(0.84);
-          /* Small pentagon - point at bottom */
-          clip-path: polygon(5% 0%, 95% 0%, 95% 25%, 50% 60%, 50% 60%, 5% 25%);
-        }
-        58% {
-          opacity: 1;
-          transform: translate3d(-50%, -50%, 0) scale(0.87);
-          /* Medium pentagon */
-          clip-path: polygon(2% 0%, 98% 0%, 98% 35%, 50% 75%, 50% 75%, 2% 35%);
-        }
-        66% {
-          opacity: 1;
-          transform: translate3d(-50%, -60%, 0) scale(0.90);
-          /* Larger pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 45%, 50% 90%, 50% 90%, 0% 45%);
+        55% {
+          clip-path: polygon(0% 0%, 50% 35%, 100% 0%, 100% 55%, 50% 55%, 0% 55%);
+          transform: translate(-50%, -45%);
         }
         75% {
-          opacity: 1;
-          transform: translate3d(-50%, -70%, 0) scale(0.93);
-          /* Large pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 55%, 50% 100%, 50% 100%, 0% 55%);
-        }
-        80% {
-          opacity: 1;
-          transform: translate3d(-50%, -75%, 0) scale(0.82);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 100% 100%, 0% 100%, 0% 80%);
-        }
-        86% {
-          opacity: 1;
-          transform: translate3d(-50%, -68%, 0) scale(0.85);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        92% {
-          opacity: 1;
-          transform: translate3d(-50%, -58%, 0) scale(0.90);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 50% 20%, 100% 0%, 100% 80%, 50% 80%, 0% 80%);
+          transform: translate(-50%, -55%);
         }
         100% {
-          opacity: 1;
-          transform: translate3d(-50%, -45%, 0) scale(1);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+          transform: translate(-50%, -45%);
         }
       }
 
       .card.animating {
-        animation: cardEmergeMobile 1.6s linear forwards;
+        animation: cardEmergeMobile 1.5s ease-in-out forwards;
       }
 
       .card.visible {
-        transform: translate3d(-50%, -45%, 0) scale(1);
+        transform: translate(-50%, -45%);
       }
 
       .show-badge {
@@ -992,7 +937,7 @@
     <p class="reopen-hint" id="reopenHint">✨ Tap to open ✨</p>
   </section>
 
-  <!-- Card (flies out separately) -->
+  <!-- Card with CSS mask animation -->
   <div class="card" id="card">
     <button class="close-btn" id="closeBtn">✕</button>
     <!-- Pastry themed corners - no top-right due to close button -->
@@ -1193,7 +1138,7 @@
         rsvpButtons.classList.remove('hidden');
         rsvpButtons.classList.add('visible');
         scrollIndicator.classList.remove('hidden');
-      }, 1300);
+      }, 1700);
     }
 
     // Click on envelope to open
