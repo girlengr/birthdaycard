@@ -241,15 +241,25 @@
         /* Pentagon - higher up, point at bottom */
         clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 50% 100%, 0% 50%);
       }
-      82% {
-        transform: translate(-50%, -75%) scale(0.95);
+      80% {
+        transform: translate(-50%, -75%) scale(0.92);
         /* Rectangle high - 6 points */
         clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
+      }
+      87% {
+        transform: translate(-50%, -60%) scale(0.95);
+        /* Rectangle descending */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
+      }
+      94% {
+        transform: translate(-50%, -48%) scale(0.98);
+        /* Rectangle almost settled */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
       }
       100% {
         transform: translate(-50%, -35%) scale(1);
         /* Rectangle settles down lower - 6 points */
-        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 100% 100%, 0% 100%, 0% 75%);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
       }
     }
 
