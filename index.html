@@ -760,93 +760,40 @@
 
       .card {
         padding: 20px;
-        width: 95%;
-        top: 40%;
-        will-change: transform, clip-path, opacity;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-      }
-
-      /* Mobile card emergence animation - adjusted for top: 40% */
-      /* Structure: 0-35% triangles, 40-70% pentagons, 75-100% rectangles */
-      @keyframes cardEmergeMobile {
-        0% {
-          opacity: 1;
-          transform: translate3d(-50%, 0%, 0) scale(0.50);
-          clip-path: polygon(35% 0%, 65% 0%, 65% 0%, 50% 8%, 50% 8%, 35% 0%);
-        }
-        12% {
-          opacity: 1;
-          transform: translate3d(-50%, -3%, 0) scale(0.58);
-          clip-path: polygon(28% 0%, 72% 0%, 72% 0%, 50% 18%, 50% 18%, 28% 0%);
-        }
-        24% {
-          opacity: 1;
-          transform: translate3d(-50%, -8%, 0) scale(0.66);
-          clip-path: polygon(18% 0%, 82% 0%, 82% 0%, 50% 28%, 50% 28%, 18% 0%);
-        }
-        35% {
-          opacity: 1;
-          transform: translate3d(-50%, -15%, 0) scale(0.74);
-          clip-path: polygon(8% 0%, 92% 0%, 92% 5%, 50% 38%, 50% 38%, 8% 5%);
-        }
-        40% {
-          opacity: 1;
-          transform: translate3d(-50%, -30%, 0) scale(0.78);
-          /* Small pentagon */
-          clip-path: polygon(5% 0%, 95% 0%, 95% 25%, 50% 60%, 50% 60%, 5% 25%);
-        }
-        50% {
-          opacity: 1;
-          transform: translate3d(-50%, -45%, 0) scale(0.82);
-          /* Medium pentagon */
-          clip-path: polygon(2% 0%, 98% 0%, 98% 35%, 50% 75%, 50% 75%, 2% 35%);
-        }
-        60% {
-          opacity: 1;
-          transform: translate3d(-50%, -58%, 0) scale(0.86);
-          /* Larger pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 45%, 50% 90%, 50% 90%, 0% 45%);
-        }
-        70% {
-          opacity: 1;
-          transform: translate3d(-50%, -70%, 0) scale(0.90);
-          /* Large pentagon */
-          clip-path: polygon(0% 0%, 100% 0%, 100% 55%, 50% 100%, 50% 100%, 0% 55%);
-        }
-        75% {
-          opacity: 1;
-          transform: translate3d(-50%, -75%, 0) scale(0.82);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 100% 100%, 0% 100%, 0% 80%);
-        }
-        83% {
-          opacity: 1;
-          transform: translate3d(-50%, -68%, 0) scale(0.86);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        88% {
-          opacity: 1;
-          transform: translate3d(-50%, -58%, 0) scale(0.90);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        94% {
-          opacity: 1;
-          transform: translate3d(-50%, -52%, 0) scale(0.95);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
-        100% {
-          opacity: 1;
-          transform: translate3d(-50%, -45%, 0) scale(1);
-          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%);
-        }
+        width: 95%; /*90 or 95?*/ 
+        top: 42%;
+        /* Mobile: inset clip-path transition (no polygon) */
+        transform: translate(-50%, calc(-50% + 150px)) scale(0.85);
+        clip-path: inset(60% 0 0 0); /* Clip top 60%, bottom visible first */
+        transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.4s ease,
+                    clip-path 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    z-index 0s 0.2s;
       }
 
       .card.animating {
-        animation: cardEmergeMobile 1.6s linear forwards;
+        opacity: 1;
+        z-index: 10;
+        animation: none; /* Disable desktop keyframe animation */
+        /* Target values - transition animates to these */
+        transform: translate(-50%, -50%) scale(1);
+        clip-path: inset(0 0 0 0);
       }
 
       .card.visible {
-        transform: translate3d(-50%, -45%, 0) scale(1);
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.4s ease,
+                    clip-path 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    z-index 0s 0s;
+      }
+
+      .card.closing {
+        transform: translate(-50%, calc(-50% + 150px)) scale(0.85);
+        opacity: 0;
+        clip-path: inset(60% 0 0 0);
       }
 
       .show-badge {
@@ -1194,22 +1141,36 @@
       // Open envelope flap
       envelope.classList.add('open');
 
-      // Start card emergence animation
-      setTimeout(() => {
-        card.classList.remove('closing');
-        card.classList.add('animating');
-      }, 200);
+      const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
-      // Card fully visible after animation completes
-      setTimeout(() => {
-        card.classList.remove('animating');
-        card.classList.add('visible');
-        envelopeContainer.classList.add('opened');
-        cardVisible = true;
-        rsvpButtons.classList.remove('hidden');
-        rsvpButtons.classList.add('visible');
-        scrollIndicator.classList.remove('hidden');
-      }, 1300);
+      if (isMobile) {
+        // Mobile: simple transition, envelope fades with card
+        setTimeout(() => {
+          envelopeContainer.classList.add('opened');
+          card.classList.add('visible');
+          card.classList.remove('closing');
+          cardVisible = true;
+          rsvpButtons.classList.remove('hidden');
+          rsvpButtons.classList.add('visible');
+          scrollIndicator.classList.remove('hidden');
+        }, 900);
+      } else {
+        // Desktop: keyframe animation
+        setTimeout(() => {
+          card.classList.remove('closing');
+          card.classList.add('animating');
+        }, 200);
+
+        setTimeout(() => {
+          card.classList.remove('animating');
+          card.classList.add('visible');
+          envelopeContainer.classList.add('opened');
+          cardVisible = true;
+          rsvpButtons.classList.remove('hidden');
+          rsvpButtons.classList.add('visible');
+          scrollIndicator.classList.remove('hidden');
+        }, 1600);
+      }
     }
 
     // Click on envelope to open
